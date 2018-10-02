@@ -1,0 +1,109 @@
+<?php
+
+$titlehead = 'My Games';
+$this->headTitle($titlehead);
+?>
+<h1><?= $this->escapeHtml($titlehead) ?></h1>
+<p>
+    <a href="<?= $this->url('game', ['action' => 'add']) ?>">Add New Game</a>
+</p>
+
+Sorted By: <?php 
+
+//$hello = "N/A";
+//echo $hello;
+
+
+foreach ($sortValues as $attribute => $value )
+{
+    ?>
+    <?php
+    
+
+        switch ($value) 
+        {
+            case "ASC":
+                echo ucwords($attribute ." Ascending");
+                break;
+            case "DESC":
+                echo ucwords($attribute. " Descending");
+                break;
+
+        
+        }
+    ?>
+<?php 
+} 
+
+?>
+<table class="table">
+<tr>
+    <th></th>
+    <?php
+
+    foreach ($sortValues as $attribute => $value )
+    {?>
+    <th>
+        <a href="<?= $sort == $attribute? '/game?sort=-'.$attribute : '/game?sort=' .$attribute?>"><?=ucwords($attribute)?></a>
+        <?php
+        //var_dump($sorted);
+            switch ($value) {
+                case "ASC":
+                    echo "↑";
+                    break;
+                case "DESC":
+                    echo "↓";
+                    break;
+            
+            }?>
+    </th>
+    <?php 
+    } 
+    
+    ?>
+
+
+    <th></th>
+</tr>
+
+<?php 
+
+?>
+
+<?php foreach ($games as $game) : ?>
+    <tr>
+        <td><img src="<?= $game->img ?>" width="160px" height="208px" /></td>
+        <td><?= $this->escapeHtml($game->title) ?></td>
+        <td><?= $this->escapeHtml($game->developer) ?></td>
+        <td><?= $this->escapeHtml($game->date) ?></td>
+        <td><?= $this->escapeHtml($game->rating) ?></td>
+        
+        <td> 
+            <?php
+
+         
+                if($game->online == 1)
+                {
+                    echo "Yes";
+                }
+                elseif($game->online > 1)
+                {
+
+                    echo "houston, we have a problem";
+                }
+
+                else
+                {
+                    echo "No";
+                }
+            ?>
+        </td>
+
+        <td>
+            <a href="<?= $this->url('game', ['action' => 'edit', 'id' => $game->id]) ?>">Edit</a>
+            <a href="<?= $this->url('game', ['action' => 'delete', 'id' => $game->id]) ?>">Delete</a>
+        </td>
+    </tr>
+
+<?php endforeach; ?>
+</table>

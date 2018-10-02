@@ -1,0 +1,85 @@
+<?php
+
+$gamehead = 'Add New Game';
+$this->headTitle($gamehead);
+?>
+<h1><?= $this->escapeHtml($gamehead) ?></h1>
+<?php
+
+// This provides a default CSS class and placeholder text for the title element:
+$title = $form->get('title');
+$title->setAttribute('class', 'form-control');
+$title->setAttribute('placeholder', 'Game Title');
+    
+$developer = $form->get('developer');
+$developer->setAttribute('class', 'form-control');
+$developer->setAttribute('placeholder', 'Developer');
+
+$date = $form->get('date');
+$date->setAttribute('class', 'form-control');
+$date->setAttribute('placeholder', 'Release date');
+
+$rating = $form->get('rating');
+$rating->setAttribute('class', 'form-control');
+$rating->setAttribute('placeholder', 'PEGI Rating');
+
+$img = $form->get('img');
+$img->setAttribute('class', 'form-control');
+$img->setAttribute('placeholder', 'Image URL');
+
+$online = $form->get('online');
+$online->setAttribute('class', 'form-control');
+$online->setAttribute('placeholder', 'Multiplayer');
+    
+// This provides CSS classes for the submit button:
+$submit = $form->get('submit');
+$submit->setAttribute('class', 'btn btn-primary');
+    
+$form->setAttribute('action', $this->url('game', ['action' => 'add']));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+?>
+<?php // Wrap the elements in divs marked as form groups, and render the
+      // label, element, and errors separately within ?>
+<div class="form-group">
+    <?= $this->formLabel($title) ?>
+    <?= $this->formElement($title) ?>
+    <?= $this->formElementErrors()->render($title, ['class' => 'help-block']) ?>
+</div>
+
+<div class="form-group">
+    <?= $this->formLabel($developer) ?>
+    <?= $this->formElement($developer) ?>
+    <?= $this->formElementErrors()->render($developer, ['class' => 'help-block']) ?>
+</div>
+
+<div class="form-group">
+    <?= $this->formLabel($date) ?>
+    <?= $this->formElement($date) ?>
+    <?= $this->formElementErrors()->render($date, ['class' => 'help-block']) ?>
+</div>
+
+<div class="form-group">
+    <?= $this->formLabel($rating) ?>
+    <?= $this->formElement($rating) ?>
+    <?= $this->formElementErrors()->render($rating, ['class' => 'help-block']) ?>
+</div>
+
+<div class="form-group">
+    <?= $this->formLabel($img) ?>
+    <?= $this->formElement($img) ?>
+    <?= $this->formElementErrors()->render($img, ['class' => 'help-block']) ?>
+</div>
+
+<div class="form-group">
+    <?= $this->formLabel($online) ?>
+    <?= $this->formElement($online) ?>
+    <?= $this->formElementErrors()->render($online, ['class' => 'help-block']) ?>
+</div>
+
+<?php
+echo $this->formSubmit($submit);
+echo $this->formHidden($form->get('id'));
+echo $this->form()->closeTag();
+?>

@@ -1,0 +1,43 @@
+<?php
+$userhead = 'Login';
+$this->headTitle($userhead);
+?>
+
+<h1><?= $this->escapeHtml($userhead) ?></h1>
+
+<?php
+
+$username = $loginform->get('username');
+$username->setAttribute('class', 'form-control');
+$username->setAttribute('placeholder', 'Username');
+
+$password = $loginform->get('password');
+$password->setAttribute('class', 'form-control');
+$password->setAttribute('placeholder', 'password');
+
+$submit = $loginform->get('submit');
+$submit->setAttribute('class', 'btn btn-primary');
+    
+$loginform->prepare();
+
+echo $this->form()->openTag($loginform);
+
+?>
+
+<div class="form-group">
+    <?= $this->formLabel($username) ?>
+    <?= $this->formElement($username) ?>
+    <?= $this->formElementErrors()->render($username, ['class' => 'help-block']) ?>
+</div>
+
+<div class="form-group">
+    <?= $this->formLabel($password) ?>
+    <?= $this->formElement($password) ?>
+    <?= $this->formElementErrors()->render($password, ['class' => 'help-block']) ?>
+</div>
+
+<?php
+    echo $this->formSubmit($submit);
+
+    echo $this->form()->closeTag();
+?>

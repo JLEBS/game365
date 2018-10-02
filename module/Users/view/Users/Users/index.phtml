@@ -1,0 +1,64 @@
+<?php
+
+$title = 'Registered Users';
+$this->headTitle($title);
+?>
+<h1><?= $this->escapeHtml($title) ?></h1>
+
+<?php //ONLY ADMINS CAN SEE THIS ?>
+<p>
+    <a href="<?= $this->url('users', ['action' => 'register']) ?>">Add new user</a>
+</p>
+<?php //END ?>
+
+<table class="table">
+<tr>
+
+    <?php //ONLY MEMBERS + ADMINS CAN SEE THIS ?>
+    <th>Username</th>
+    <th>Date of Birth</th>
+    <th>Admin</th>
+    <?php //END ?>
+
+    <?php //ONLY ADMINS CAN SEE THIS ?>
+    <th>Firstname</th>
+    <th>Surname</th>
+    <th>Email</th>
+    <th>Modify</th>
+    <?php //END ?>
+
+</tr>
+<?php foreach ($users as $user) : ?>
+        
+    <tr>
+
+        <?php //ONLY MEMBERS + ADMINS CAN SEE THIS ?>
+        <td><?= $this->escapeHtml($user->username) ?></td>
+        <td><?= $this->escapeHtml($user->dob) ?></td>
+        <td>
+        <?php
+            if($user->admin == 1)
+            {
+                echo "Yes";
+            }
+            else
+            {
+                echo "No";
+            }
+        ?>
+        </td>
+        <?php //END ?>
+        
+        <?php //ONLY ADMINS CAN SEE THIS ?>
+        <td><?= $this->escapeHtml($user->firstname) ?></td>
+        <td><?= $this->escapeHtml($user->surname) ?></td>
+        <td><?= $this->escapeHtml($user->email) ?></td>
+        <td>
+            <a href="<?= $this->url('users', ['action' => 'edit', 'id' => $user->id]) ?>">Edit</a>
+            <a href="<?= $this->url('users', ['action' => 'delete', 'id' => $user->id]) ?>">Delete</a>
+        </td>
+        <?php //END ?>
+
+    </tr>
+<?php endforeach; ?>
+</table>
