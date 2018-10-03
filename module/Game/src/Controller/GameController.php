@@ -43,7 +43,8 @@
                     "sort" => self::getZfOrder($this->getSort())
                 ]),
                     "sort" => $this->params()->fromQuery('sort'),
-                    "sortValues" => $sortValues
+                    "sortValues" => $sortValues,
+                    "user" => $this->getAuthenticatedUser()->get()
                     // return $this=>$sortValues
                     //return current($sortValue);
             ]);
@@ -51,6 +52,17 @@
 
         public function addAction()
         {
+            if (!$user = $this->getAuthenticatedUser()->get()) {
+                echo 'You must be registered to have access to this feature.';
+                exit;
+            }
+
+            if ($user->admin == 0)
+            {
+                echo "You need admin permissions to add a new game.";
+                exit;
+            }
+
             $form = new GameForm();
             $form->get('submit')->setValue('Add');
     
@@ -76,6 +88,17 @@
 
         public function editAction()
         {
+
+            if (!$user = $this->getAuthenticatedUser()->get()) {
+                echo 'You must be registered to have access to this feature.';
+                exit;
+            }
+            if ($user->admin == 0)
+            {
+                echo "You need admin permissions to modify details.";
+                exit;
+            }
+
             $id = (int) $this->params()->fromRoute('id', 0);
 
             if (0 === $id) {
@@ -120,6 +143,18 @@
 
         public function deleteAction()
         {
+
+            if (!$user = $this->getAuthenticatedUser()->get()) {
+
+                echo 'You must be registered to have access to this feature.';
+                exit;
+            }
+            if ($user->admin == 0)
+            {
+                echo $user->username."You need admin permissions to modify game details.";
+                exit;
+            }
+
             $id = (int) $this->params()->fromRoute('id', 0);
             if (!$id) {
                 return $this->redirect()->toRoute('game');

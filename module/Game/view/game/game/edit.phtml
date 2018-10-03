@@ -6,6 +6,15 @@ $headtitle = 'Edit Game';
 $this->headTitle($headtitle);
 ?>
 <h1><?= $this->escapeHtml($headtitle) ?></h1>
+<h2>
+    <?php 
+        if($user)
+        {
+            echo "Welcome ".$user->firstname;
+        }
+    ?>
+</h2> 
+
 <?php
 $title = $form->get('title');
 $title->setAttribute('class', 'form-control');

@@ -18,6 +18,10 @@ class UsersTable
     {
         
         return $this->tableGateway->select(function($select) use ($options) {
+            if (isset($options['username'])) {
+                $select->where([ 'username' => $options['username'] ]);
+            }
+
             if (isset($options['sort'])) {
                 $select->order($options['sort']);
             }

@@ -22,6 +22,13 @@
 
         public function indexAction()
         {
+
+            if (!$this->getAuthenticatedUser()->get()) {
+
+                echo 'You must be registered to have access to this feature.';
+                exit;
+            }
+
             $sortableAttributes = [
                 'username',
                 'dob',
@@ -46,9 +53,9 @@
                     "sort" => self::getZfOrder($this->getSort())
                 ]),
                     "sort" => $this->params()->fromQuery('sort'),
-                    "sortValues" => $sortValues
-                    // return $this=>$sortValues
-                    //return current($sortValue);
+                    "sortValues" => $sortValues,
+                    "user" => $this->getAuthenticatedUser()->get()
+                   
             ]);
         }
 
@@ -88,16 +95,23 @@
 
         public function editAction()
         {
-            
+            if (!$user = $this->getAuthenticatedUser()->get()) {
+
+                echo 'You must be registered to have access to this feature.';
+                exit;
+            }
+            if ($user->admin == 0)
+            {
+                echo "You need admin permissions to modify user details.";
+                exit;
+            }
+
             $id = (int) $this->params()->fromRoute('id', 0);
 
             if (0 === $id) {
                 return $this->redirect()->toRoute('users', ['action' => 'add']);
             }
 
-            // Retrieve the album with the specified id. Doing so raises
-            // an exception if the album is not found, which should result
-            // in redirecting to the landing page.
             try {
                 $users = $this->table->getUsers($id);
                 $users->validatePassword = false;
@@ -106,9 +120,7 @@
                 return $this->redirect()->toRoute('users', ['action' => 'index']);
             }
 
-            //CHECK THIS
             $form = new UsersForm();
-            
             $form->bind($users);
             $form->get('submit')->setAttribute('value', 'Edit');
 
@@ -119,25 +131,26 @@
                 return $viewData;
             }
 
-            // $form->setInputFilter($users->getInputFilter());
-
             $form->setData($request->getPost());
 
-            if (! $form->isValid()) {
-                echo '<pre>';
-                var_dump($form->getMessages());
-                echo '</pre>';
-                return $viewData;
-            }
-
             $this->table->saveUsers($users);
-
-            // Redirect to game list
             return $this->redirect()->toRoute('users', ['action' => 'index']);
         }
 
         public function deleteAction()
         {
+            if (!$user = $this->getAuthenticatedUser()->get()) {
+
+
+                echo 'You must be registered to have access to this feature.';
+                exit;
+            }
+            if ($user->admin == 0)
+            {
+                echo "You need admin permissions to modify game details.";
+                exit;
+            }
+
             $id = (int) $this->params()->fromRoute('id', 0);
             if (!$id) {
                 return $this->redirect()->toRoute('users');

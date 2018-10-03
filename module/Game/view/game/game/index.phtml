@@ -3,6 +3,14 @@
     $this->headTitle($titlehead);
 ?>
 <h1><?= $this->escapeHtml($titlehead) ?></h1>
+<h2>
+    <?php 
+        if($user)
+        {
+            echo "Welcome ".$user->firstname;
+        }
+    ?>
+</h2> 
 
 <?php //ONLY MEMBER CAN SEE THIS ?>
     <p>

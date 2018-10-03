@@ -4,9 +4,17 @@
     $title = 'Registered Users';
     $this->headTitle($title);
 ?>
-<h1><?= $this->escapeHtml($title) ?></h1>
+<h1><?= $this->escapeHtml($title); 
+?></h1>
 
-<br/>
+<h2>
+    <?php 
+        if($user)
+        {
+            echo "Welcome ".$user->firstname;
+        }
+    ?>
+</h2> 
 
 Sorted By: 
 <?php
@@ -57,14 +65,14 @@ Sorted By:
 
     <?php
 
-    foreach ($users as $user) : 
+    foreach ($users as $tableuser) : 
     ?>
         <tr>
-            <td><?= $this->escapeHtml($user->username) ?></td>
-            <td><?= $this->escapeHtml($user->dob) ?></td>
+            <td><?= $this->escapeHtml($tableuser->username) ?></td>
+            <td><?= $this->escapeHtml($tableuser->dob) ?></td>
             <td> 
             <?php
-                if($user->admin == 1)
+                if($tableuser->admin == 1)
                 {
                     echo "Yes";
                 }
@@ -72,16 +80,21 @@ Sorted By:
                 {
                     echo "No";
                 }
-            //ONLY ADMINS CAN SEE THIS ?>
+           ?>
             </td>
-            <td><?= $this->escapeHtml($user->firstname) ?></td>
-            <td><?= $this->escapeHtml($user->surname) ?></td>
-            <td><?= $this->escapeHtml($user->email) ?></td>
-            <td>
-                <a href="<?= $this->url('users', ['action' => 'edit', 'id' => $user->id]) ?>">Edit</a>
-                <a href="<?= $this->url('users', ['action' => 'delete', 'id' => $user->id]) ?>">Delete</a>
-            </td>
-            <? //END ?>
+
+            <? 
+            if($user->admin == 1)
+            {
+            ?>
+                <td><?= $this->escapeHtml($tableuser->firstname) ?></td>
+                <td><?= $this->escapeHtml($tableuser->surname) ?></td>
+                <td><?= $this->escapeHtml($tableuser->email) ?></td>
+                <td>
+                    <a href="<?= $this->url('users', ['action' => 'edit', 'id' => $tableuser->id]) ?>">Edit</a>
+                    <a href="<?= $this->url('users', ['action' => 'delete', 'id' => $tableuser->id]) ?>">Delete</a>
+                </td>
+        <? }?>
         </tr>
 
     <?php endforeach; ?>

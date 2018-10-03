@@ -3,6 +3,7 @@
 namespace Users;
 
 use Zend\Router\Http\Segment;
+use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
     'router' => [
@@ -37,6 +38,15 @@ return [
     'view_manager' => [
         'template_path_stack' => [
             'users' => __DIR__ . '/../view',
+        ],
+    ],
+
+    'controller_plugins' => [
+        'aliases' => [
+            'getAuthenticatedUser' => Controller\Plugin\GetAuthenticatedUser::class
+        ],
+        'factories' => [
+            Controller\Plugin\GetAuthenticatedUser::class => InvokableFactory::class
         ],
     ],
 ];
