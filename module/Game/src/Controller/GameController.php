@@ -47,7 +47,6 @@
                     // return $this=>$sortValues
                     //return current($sortValue);
             ]);
-
         }
 
         public function addAction()

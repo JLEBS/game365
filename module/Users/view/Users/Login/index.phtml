@@ -4,6 +4,9 @@ $this->headTitle($userhead);
 ?>
 
 <h1><?= $this->escapeHtml($userhead) ?></h1>
+<p>
+<a href="<?= $this->url('users', ['action' => 'register']) ?>">Don't have an account? Register here!</a>
+</p>
 
 <?php
 
@@ -13,7 +16,7 @@ $username->setAttribute('placeholder', 'Username');
 
 $password = $loginform->get('password');
 $password->setAttribute('class', 'form-control');
-$password->setAttribute('placeholder', 'password');
+$password->setAttribute('placeholder', 'Password');
 
 $submit = $loginform->get('submit');
 $submit->setAttribute('class', 'btn btn-primary');
@@ -38,6 +41,5 @@ echo $this->form()->openTag($loginform);
 
 <?php
     echo $this->formSubmit($submit);
-
     echo $this->form()->closeTag();
 ?>

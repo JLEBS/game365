@@ -7,7 +7,6 @@ class UsersForm extends Form
 {
     public function __construct($options = [])
     {
-        // We will ignore the name provided to the constructor
         parent::__construct('user');
 
         $this->add([

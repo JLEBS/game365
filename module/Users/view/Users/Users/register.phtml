@@ -1,5 +1,5 @@
 <?php
-$userhead = 'Register User';
+$userhead = 'Create an Account';
 $this->headTitle($userhead);
 ?>
 
@@ -13,15 +13,15 @@ $firstname->setAttribute('placeholder', 'Firstname');
     
 $surname = $form->get('surname');
 $surname->setAttribute('class', 'form-control');
-$surname->setAttribute('placeholder', 'surname');
+$surname->setAttribute('placeholder', 'Surname');
 
 $dob = $form->get('dob');
 $dob->setAttribute('class', 'form-control');
-$dob->setAttribute('placeholder', 'dob');
+$dob->setAttribute('placeholder', 'Date of Birth');
 
 $email = $form->get('email');
 $email->setAttribute('class', 'form-control');
-$email->setAttribute('placeholder', 'email');
+$email->setAttribute('placeholder', 'Email');
 
 $username = $form->get('username');
 $username->setAttribute('class', 'form-control');
@@ -29,7 +29,7 @@ $username->setAttribute('placeholder', 'Username');
 
 $password = $form->get('password');
 $password->setAttribute('class', 'form-control');
-$password->setAttribute('placeholder', 'password');
+$password->setAttribute('placeholder', 'Password');
 
 //WRAP THIS IN AN IF STATEMENT, ONLY WHEN ADMIN IS LOGGED IN
 //IF ADMIN IS NOT LOGGED IN, DEFAULT TO 0

@@ -7,6 +7,7 @@
 
 namespace Application;
 
+use Users\Controller\LoginController;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
@@ -21,7 +22,7 @@ return [
                 'options' => [
                     'route'    => '/',
                     'defaults' => [
-                        'controller' => GameController::class,
+                        'controller' => LoginController::class,
                         'action'     => 'index',
                     ],
                 ],

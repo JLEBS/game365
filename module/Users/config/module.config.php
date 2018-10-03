@@ -5,8 +5,6 @@ namespace Users;
 use Zend\Router\Http\Segment;
 
 return [
-    
-
     'router' => [
         'routes' => [
             'users' => [

@@ -22,8 +22,33 @@
 
         public function indexAction()
         {
+            $sortableAttributes = [
+                'username',
+                'dob',
+                'admin',
+                'firstname',
+                'surname',
+                'email'
+            ];
+
+        $sortValues = array_reduce($sortableAttributes,
+
+            function ($reduced, $attribute)
+            {
+                $sortValue = $this->getSortAttribute($attribute, $this->getSort());
+                $reduced[$attribute] = $sortValue['order'];
+                return $reduced;
+
+            },[]);
+
             return new ViewModel([
-                'users' => $this->table->fetchAll(),
+                'users' => $this->table->fetchAll([
+                    "sort" => self::getZfOrder($this->getSort())
+                ]),
+                    "sort" => $this->params()->fromQuery('sort'),
+                    "sortValues" => $sortValues
+                    // return $this=>$sortValues
+                    //return current($sortValue);
             ]);
         }
 
@@ -136,6 +161,48 @@
             ];
         }
    
+
+        protected function getSort () {
+
+            $query = $this->params()
+            ->fromQuery('sort');
+        
+            if (!$query) {
+            return [];
+            }
+        
+            $query = explode(',', $query);
+        
+            return array_reduce($query, function ($reduced, $entry) {
+            $parts = explode('-', $entry);
+            $attribute = end($parts);
+        
+            $order = substr($entry, 0, 1) === '-'
+                ? 'DESC'
+                : 'ASC';
+        
+            $reduced[] = [
+                'attribute' => $attribute,
+                'order' => $order
+            ];
+            return $reduced;
+            }, []);
+            }
+            
+            protected static function getZfOrder ($sort) {
+                return array_map(function ($entry) {
+                return implode(' ', $entry);
+                }, $sort);
+            }
+
+            protected function getSortAttribute ($name, $sort) {
+                $sortValue = array_filter($sort, function ($sortAttribute) use ($name) {
+                return $sortAttribute['attribute'] === $name;
+                });
+            
+                return current($sortValue);
+        }
+
         /*
         public function loginAction()
         {
