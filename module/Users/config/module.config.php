@@ -32,6 +32,16 @@ return [
                     ],
                 ],
             ],
+            'logout' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route' => '/logout',
+                    'defaults' => [
+                        'controller' => Controller\LoginController::class,
+                        'action'     => 'logout',
+                    ],
+                ],
+            ],
         ],
     ],
 
@@ -49,6 +59,14 @@ return [
             Controller\Plugin\GetAuthenticatedUser::class => InvokableFactory::class
         ],
     ],
+    'view_helpers' => [
+        'aliases' =>[
+            'getAuthenticatedUser' => View\Helper\GetAuthenticatedUser::class
+        ],
+        'factories' => [
+            View\Helper\GetAuthenticatedUser::class => InvokableFactory::class
+        ],
+    ]
 ];
 
 ?>

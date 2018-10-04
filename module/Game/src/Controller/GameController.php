@@ -53,13 +53,17 @@
         public function addAction()
         {
             if (!$user = $this->getAuthenticatedUser()->get()) {
-                echo 'You must be registered to have access to this feature.';
+                $this->flashMessenger()->addMessage('You must create an account to have access to this feature!');
+                return $this->redirect()
+                ->toRoute('game');
                 exit;
             }
 
             if ($user->admin == 0)
             {
-                echo "You need admin permissions to add a new game.";
+                $this->flashMessenger()->addMessage('Check your privilege!');
+                return $this->redirect()
+                ->toRoute('game');
                 exit;
             }
 
@@ -90,12 +94,17 @@
         {
 
             if (!$user = $this->getAuthenticatedUser()->get()) {
-                echo 'You must be registered to have access to this feature.';
+                $this->flashMessenger()->addMessage('You must create an account to have access to this feature!');
+                return $this->redirect()
+                ->toRoute('game');
                 exit;
             }
+
             if ($user->admin == 0)
             {
-                echo "You need admin permissions to modify details.";
+                $this->flashMessenger()->addMessage('Check your privilege!');
+                return $this->redirect()
+                ->toRoute('game');
                 exit;
             }
 
@@ -144,14 +153,19 @@
         public function deleteAction()
         {
 
-            if (!$user = $this->getAuthenticatedUser()->get()) {
-
-                echo 'You must be registered to have access to this feature.';
+            if (!$user = $this->getAuthenticatedUser()->get()) 
+            {
+                $this->flashMessenger()->addMessage('You must create an account to have access to this feature!');
+                return $this->redirect()
+                ->toRoute('game');
                 exit;
             }
+
             if ($user->admin == 0)
             {
-                echo $user->username."You need admin permissions to modify game details.";
+                $this->flashMessenger()->addMessage('Check your privilege!');
+                return $this->redirect()
+                ->toRoute('game');
                 exit;
             }
 

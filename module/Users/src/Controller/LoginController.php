@@ -22,6 +22,16 @@ class LoginController extends AbstractActionController
 
     public function indexAction()
     {
+
+        if ($user = $this->getAuthenticatedUser()->get()) {
+
+            //only username must be right
+            //$this->flashMessenger()->addMessage('Already logged in!');
+            return $this->redirect()
+            ->toRoute('game');
+        }
+
+
         $loginform = new LoginForm(array(
             'action' => '/login/process',
             'method' => 'post',
@@ -37,6 +47,13 @@ class LoginController extends AbstractActionController
         
         $data = $request->getPost();
 
+        $loginform->setData($data);
+
+        if (!$loginform->isValid()) {
+            $this->flashMessenger()->addMessage('Please enter your username and password');
+            return $this->redirect()->toRoute('login');
+        }
+
         $user = $this->table->fetchAll([
             "username" => $data['username']
         ])->current();
@@ -45,24 +62,36 @@ class LoginController extends AbstractActionController
         $password = $data['password'];
 
         if (!$user) {
-            echo 'Failed (user does not exist)';
+
+            $this->flashMessenger()->addMessage('Username & Password do not match!');
+
+            return $this->redirect()
+            ->toRoute('login');
             exit;
         }
         if (!$bcrypt->verify($password, $user->password))
         {
-            return $this->redirect()
-            ->toRoute('users');
 
-            echo 'Failed (password does not match)';
+            $this->flashMessenger()->addMessage('Password does not match!');
+            return $this->redirect()
+            ->toRoute('login');
+
+    
             exit;
         }
 
         $this->getAuthenticatedUser()->set($user);
 
         return $this->redirect()
-            ->toRoute('game');
+            ->toRoute('login');
     }
 
+    public function logoutAction()
+    {
+        $this->getAuthenticatedUser()->set(null);
+        return $this->redirect()->toRoute('login');
+
+    }
 
 
 }

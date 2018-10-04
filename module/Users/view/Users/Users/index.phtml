@@ -1,12 +1,9 @@
 <?php
-
     //ONLY MEMBERS CAN ACCESS THIS PAGE
     $title = 'Registered Users';
     $this->headTitle($title);
 ?>
-<h1><?= $this->escapeHtml($title); 
-?></h1>
-
+<h1><?= $this->escapeHtml($title) ?></h1>
 <h2>
     <?php 
         if($user)
@@ -15,10 +12,10 @@
         }
     ?>
 </h2> 
+<br/>
 
 Sorted By: 
 <?php
-
     foreach ($sortValues as $attribute => $value)
     {
         switch($value)
@@ -31,7 +28,6 @@ Sorted By:
                 break;
         }
     }
-
 ?>
 <table class="table">
     <tr>
@@ -64,15 +60,14 @@ Sorted By:
     </tr>
 
     <?php
-
-    foreach ($users as $tableuser) : 
+    foreach ($users as $user) : 
     ?>
         <tr>
-            <td><?= $this->escapeHtml($tableuser->username) ?></td>
-            <td><?= $this->escapeHtml($tableuser->dob) ?></td>
+            <td><?= $this->escapeHtml($user->username) ?></td>
+            <td><?= $this->escapeHtml($user->dob) ?></td>
             <td> 
             <?php
-                if($tableuser->admin == 1)
+                if($user->admin == 1)
                 {
                     echo "Yes";
                 }
@@ -80,21 +75,16 @@ Sorted By:
                 {
                     echo "No";
                 }
-           ?>
+            //ONLY ADMINS CAN SEE THIS ?>
             </td>
-
-            <? 
-            if($user->admin == 1)
-            {
-            ?>
-                <td><?= $this->escapeHtml($tableuser->firstname) ?></td>
-                <td><?= $this->escapeHtml($tableuser->surname) ?></td>
-                <td><?= $this->escapeHtml($tableuser->email) ?></td>
-                <td>
-                    <a href="<?= $this->url('users', ['action' => 'edit', 'id' => $tableuser->id]) ?>">Edit</a>
-                    <a href="<?= $this->url('users', ['action' => 'delete', 'id' => $tableuser->id]) ?>">Delete</a>
-                </td>
-        <? }?>
+            <td><?= $this->escapeHtml($user->firstname) ?></td>
+            <td><?= $this->escapeHtml($user->surname) ?></td>
+            <td><?= $this->escapeHtml($user->email) ?></td>
+            <td>
+                <a href="<?= $this->url('users', ['action' => 'edit', 'id' => $user->id]) ?>">Edit</a>
+                <a href="<?= $this->url('users', ['action' => 'delete', 'id' => $user->id]) ?>">Delete</a>
+            </td>
+            <? //END ?>
         </tr>
 
     <?php endforeach; ?>

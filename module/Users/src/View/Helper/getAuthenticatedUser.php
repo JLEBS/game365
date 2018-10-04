@@ -1,24 +1,17 @@
 <?php
 
-namespace Users\Controller\Plugin;
+namespace Users\View\Helper;
 use Zend\Session\Container;
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
+use Zend\View\Helper\AbstractHelper;
 
-
-class GetAuthenticatedUser extends AbstractPlugin
+class GetAuthenticatedUser extends AbstractHelper
 {
-    private $sessionContainer; 
+   private $sessionContainer; 
 
-    public function get()
+    public function __invoke()
     {
         $session = $this->getSessionContainer();
         return $session->user;
-    }
-
-    public function set($user)
-    {
-        $session = $this->getSessionContainer();
-        $session->user = $user;
     }
 
     private function getSessionContainer()
@@ -30,5 +23,3 @@ class GetAuthenticatedUser extends AbstractPlugin
         return $this->sessionContainer;
     }
 }
-
-?>

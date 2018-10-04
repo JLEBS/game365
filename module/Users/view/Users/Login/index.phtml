@@ -8,10 +8,6 @@ $this->headTitle($userhead);
     <a href="<?= $this->url('users', ['action' => 'register']) ?>">Don't have an account? Register here!</a>
 </p>
 
-<p>
-    Logged in as: <?=$user->firstname?>
-</p>
-
 <?php
 
 $username = $loginform->get('username');
