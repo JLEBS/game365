@@ -30,6 +30,7 @@ class UsersController extends AbstractActionController
         }
 
         $sortableAttributes = [
+            'id',
             'username',
             'dob',
             'admin',

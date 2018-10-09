@@ -33,12 +33,30 @@ Sorted By:
     <tr>
         
         <?php
+
+    if($this->getAuthenticatedUser()->admin == 1)
+    {
         $nonAdminColumns = [
+            'id',
             'username',
             'dob',
-            'admin'
-        ];
-        
+            'admin',
+            'firstname',
+            'surname',
+            'email'
+        ]; 
+    }
+
+    if($this->getAuthenticatedUser()->admin == 0)
+    {
+        $nonAdminColumns = [
+            'id',
+            'username',
+            'dob',
+            'admin',
+        ]; 
+
+    }
         foreach ($sortValues as $attribute => $value )
         {
             if ($this->getAuthenticatedUser()->admin !== 1 && !in_array($attribute, $nonAdminColumns)) {
@@ -75,6 +93,7 @@ Sorted By:
     foreach ($users as $user) : 
     ?>
         <tr>
+            <td><?= $this->escapeHtml($user->id) ?></td>
             <td><?= $this->escapeHtml($user->username) ?></td>
             <td><?= $this->escapeHtml($user->dob) ?></td>
             <td> 

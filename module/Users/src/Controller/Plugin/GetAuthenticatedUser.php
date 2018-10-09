@@ -3,7 +3,8 @@
 namespace Users\Controller\Plugin;
 use Zend\Session\Container;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
-
+use Zend\Session\Config\StandardConfig;
+use Zend\Session\SessionManager;
 
 class GetAuthenticatedUser extends AbstractPlugin
 {
@@ -12,6 +13,7 @@ class GetAuthenticatedUser extends AbstractPlugin
     public function get()
     {
         $session = $this->getSessionContainer();
+        $this->touchSessionCOntainer();
         return $session->user;
     }
 
@@ -19,6 +21,12 @@ class GetAuthenticatedUser extends AbstractPlugin
     {
         $session = $this->getSessionContainer();
         $session->user = $user;
+
+        //$user->setExpirationSeconds(60);
+    }
+    public function touchSessionContainer()
+    {
+        $this->getSessionContainer()->setExpirationSeconds(600);
     }
 
     private function getSessionContainer()
