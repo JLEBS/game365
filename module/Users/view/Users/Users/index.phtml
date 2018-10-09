@@ -34,7 +34,7 @@ Sorted By:
         
         <?php
 
-    if($this->getAuthenticatedUser()->admin == 1)
+    if($this->getAuthenticatedUser()->admin == 1 || 2)
     {
         $nonAdminColumns = [
             'id',
@@ -59,7 +59,7 @@ Sorted By:
     }
         foreach ($sortValues as $attribute => $value )
         {
-            if ($this->getAuthenticatedUser()->admin !== 1 && !in_array($attribute, $nonAdminColumns)) {
+            if ($this->getAuthenticatedUser()->admin == 0 && !in_array($attribute, $nonAdminColumns)) {
                 continue;
             }
         ?>
@@ -82,7 +82,7 @@ Sorted By:
         <?php 
         } 
        
-        if($user->admin == 1)
+        if($user->admin == 1 || 2)
         {
             ?> <th>Modify</th><?php
         }
@@ -102,16 +102,20 @@ Sorted By:
                 {
                     echo "Yes";
                 }
-                else
+                elseif($user->admin == 0)
                 {
                     echo "No";
+                }
+                else
+                {
+                    echo "Super Admin 😎";
                 }
             ?>
             </td>
 
             <?php 
             
-            if($this->getAuthenticatedUser()->admin == 1)
+            if($this->getAuthenticatedUser()->admin == 1 || 2)
             {
             ?>
             <td><?= $this->escapeHtml($user->firstname) ?></td>

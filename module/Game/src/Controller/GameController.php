@@ -114,9 +114,6 @@ class GameController extends AbstractActionController
             return $this->redirect()->toRoute('game', ['action' => 'add']);
         }
 
-        // Retrieve the album with the specified id. Doing so raises
-        // an exception if the album is not found, which should result
-        // in redirecting to the landing page.
         try {
             $game = $this->table->getGame($id);
     
@@ -124,7 +121,6 @@ class GameController extends AbstractActionController
             return $this->redirect()->toRoute('game', ['action' => 'index']);
         }
 
-        //CHECK THIS
         $form = new GameForm();
         
         $form->bind($game);
@@ -145,8 +141,6 @@ class GameController extends AbstractActionController
         }
 
         $this->table->saveGame($game);
-
-        // Redirect to game list
         return $this->redirect()->toRoute('game', ['action' => 'index']);
     }
 

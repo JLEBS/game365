@@ -22,8 +22,9 @@ class GetAuthenticatedUser extends AbstractPlugin
         $session = $this->getSessionContainer();
         $session->user = $user;
 
-        //$user->setExpirationSeconds(60);
+
     }
+    
     public function touchSessionContainer()
     {
         $this->getSessionContainer()->setExpirationSeconds(600);

@@ -9,14 +9,17 @@
     use Users\Model\UsersTable;
     use Zend\Mvc\Controller\AbstractActionController;
     use Zend\View\Model\ViewModel;
+    use Users\InputFilter\UserInputFilter;
     
 class UsersController extends AbstractActionController
 {
     private $table;
+    private $inputFilter;
 
-    public function __construct(UsersTable $table)
+    public function __construct(UsersTable $table, UserInputFilter $inputFilter)
     {
         $this->table = $table;
+        $this->inputFilter = $inputFilter;
     }
 
     public function indexAction()
@@ -66,6 +69,8 @@ class UsersController extends AbstractActionController
             "includepassword" => true
         ]);
 
+        $form->setInputFilter($this->inputFilter);
+
         $form->get('submit')->setValue('Add');
         $form->setAttribute('action', $this->url()->fromRoute('users', [ 'action' => 'register' ]));
 
@@ -76,7 +81,6 @@ class UsersController extends AbstractActionController
         }
 
         $user= new Users();
-        $form->setInputFilter($user->getInputFilter());
         $form->setData($request->getPost());
 
         if (! $form->isValid()) {
@@ -87,6 +91,16 @@ class UsersController extends AbstractActionController
 
         $bcrypt = new Bcrypt();
         $user->password = $bcrypt->create($user->password);
+
+
+        //if($user->username == $this->table->FetchAll(['username']))
+       // {
+        //    $this->flashMessenger()->addMessage('This username is already taken');
+          //  return $this->redirect()
+          //  ->toRoute('users');
+         //   exit;
+            
+      //  }
 
         $this->table->saveUsers($user);
         return $this->redirect()->toRoute('users');
@@ -116,26 +130,56 @@ class UsersController extends AbstractActionController
             return $this->redirect()->toRoute('users', ['action' => 'add']);
         }
 
+        $currentuser = $this->getAuthenticatedUser()->get()->id;
+
+        if($id == $currentuser){
+
+            $this->flashMessenger()->addMessage('You cannot delete yourself, idiot!');
+            return $this->redirect()
+            ->toRoute('users');
+            exit;
+        }
+
         try {
             $users = $this->table->getUsers($id);
+            $password = $users->password;
             $users->validatePassword = false;
+
+            if($users->admin == 1){
+
+                $this->flashMessenger()->addMessage("This isn't a dictatorship, you cannot just modify your peers, christ man, what's your problem?");
+                return $this->redirect()
+                ->toRoute('users');
+                exit;
+                
+            }
     
         } catch (\Exception $e) {
             return $this->redirect()->toRoute('users', ['action' => 'index']);
         }
 
         $form = new UsersForm();
-        $form->bind($users);
         $form->get('submit')->setAttribute('value', 'Edit');
 
         $request = $this->getRequest();
         $viewData = ['id' => $id, 'form' => $form];
 
         if (! $request->isPost()) {
+            $form->setData($users->getArrayCopy());
+            return $viewData;
+        }
+        
+        $form->setInputFilter($this->inputFilter);
+        $form->setData($request->getPost());
+        
+        if (! $request->isPost()) {
             return $viewData;
         }
 
-        $form->setData($request->getPost());
+        $form->isValid();
+
+        $users->exchangeArray($form->getData());
+        $users->password = $password;
 
         $this->table->saveUsers($users);
         return $this->redirect()->toRoute('users', ['action' => 'index']);
@@ -160,8 +204,32 @@ class UsersController extends AbstractActionController
         }
 
         $id = (int) $this->params()->fromRoute('id', 0);
+
         if (!$id) {
             return $this->redirect()->toRoute('users');
+        }
+
+        $currentuser = $this->getAuthenticatedUser()->get()->id;
+
+        $adminlevel = $this->getAuthenticatedUser()->get()->admin;
+
+        if($id == $currentuser){
+
+            $this->flashMessenger()->addMessage('You cannot delete yourself, idiot!');
+            return $this->redirect()
+            ->toRoute('users');
+            exit;
+        }
+
+        $users = $this->table->getUsers($id);
+       
+        if($adminlevel == 1 && $users->admin == 1 || 2){
+
+            $this->flashMessenger()->addMessage("This isn't a dictatorship, you cannot just delete your peers, christ man, what's your problem?");
+            return $this->redirect()
+            ->toRoute('users');
+            exit;
+            
         }
 
         $request = $this->getRequest();
@@ -176,9 +244,19 @@ class UsersController extends AbstractActionController
             return $this->redirect()->toRoute('users');
         }
 
+        $user = $this->table->fetchAll([ 'id' => $id ])
+            ->current();
+
+        if (!$user) {
+            $this->flashMessenger()->addMessage('ID does not exist');
+            return $this->redirect()
+            ->toRoute('users');
+            exit;
+        }
+
         return [
             'id'    => $id,
-            'users' => $this->table->getUsers($id),
+            'users' => $user,
         ];
     }
 

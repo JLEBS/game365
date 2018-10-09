@@ -40,6 +40,7 @@ class Module implements ConfigProviderInterface
                     $tableGateway = $container->get(Model\VerifyTableGateway::class);
                     return new Model\VerifyTable($tableGateway);
                 },
+                InputFilter\UserInputFilter::class => InputFilter\Factory\UserInputFilterFactory::class
             ],
         ];
     }
@@ -49,7 +50,8 @@ class Module implements ConfigProviderInterface
             'factories' => [
                 Controller\UsersController::class => function($container) {
                     return new Controller\UsersController(
-                        $container->get(Model\UsersTable::class)
+                        $container->get(Model\UsersTable::class),
+                        $container->get(InputFilter\UserInputFilter::class)
                     );
                 },
                 Controller\LoginController::class => function($container) {

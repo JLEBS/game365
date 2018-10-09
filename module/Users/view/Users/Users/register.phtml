@@ -31,17 +31,13 @@ $password = $form->get('password');
 $password->setAttribute('class', 'form-control');
 $password->setAttribute('placeholder', 'Password');
 
-//WRAP THIS IN AN IF STATEMENT, ONLY WHEN ADMIN IS LOGGED IN
-//IF ADMIN IS NOT LOGGED IN, DEFAULT TO 0
-
-    $admin = $form->get('admin');
-    $admin->setAttribute('class', 'form-control');
-    $admin->setAttribute('placeholder', 'adsdsdmin');
+$admin = $form->get('admin');
+$admin->setAttribute('class', 'form-control');
+//$admin->setAttribute('placeholder', 'admin');
     
 $submit = $form->get('submit');
 $submit->setAttribute('class', 'btn btn-primary');
     
-// $form->setAttribute('action', $this->url('users', ['action' => 'add']));
 $form->prepare();
 
 echo $this->form()->openTag($form);
@@ -84,8 +80,11 @@ echo $this->form()->openTag($form);
     <?= $this->formElementErrors()->render($password, ['class' => 'help-block']) ?>
 </div>
 
-
-
+<div class="form-group">
+    <?= $this->formLabel($admin) ?>
+    <?= $this->formElement($admin) ?>
+    <?= $this->formElementErrors()->render($admin, ['class' => 'help-block']) ?>
+</div>
 
 <?php
     echo $this->formSubmit($submit);
