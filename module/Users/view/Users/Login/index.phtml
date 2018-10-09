@@ -5,7 +5,8 @@ $this->headTitle($userhead);
 
 <h1><?= $this->escapeHtml($userhead) ?></h1>
 <p>
-    <a href="<?= $this->url('users', ['action' => 'register']) ?>">Don't have an account? Register here!</a>
+    <a href="<?= $this->url('users', ['action' => 'register']) ?>">Don't have an account?</a><br>
+    <a href="<?= $this->url('passwordreset') ?>">Forgotten your password?</a>
 </p>
 
 <?php

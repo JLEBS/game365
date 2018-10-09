@@ -33,8 +33,17 @@ Sorted By:
     <tr>
         
         <?php
+        $nonAdminColumns = [
+            'username',
+            'dob',
+            'admin'
+        ];
+        
         foreach ($sortValues as $attribute => $value )
         {
+            if ($this->getAuthenticatedUser()->admin !== 1 && !in_array($attribute, $nonAdminColumns)) {
+                continue;
+            }
         ?>
             <th>
                 <a href="<?= $sort == $attribute? '/users?sort=-'.$attribute : '/users?sort=' .$attribute?>"><?=ucwords($attribute)?></a>
@@ -54,9 +63,12 @@ Sorted By:
 
         <?php 
         } 
+       
+        if($user->admin == 1)
+        {
+            ?> <th>Modify</th><?php
+        }
         ?>
-
-            <th>Modify</th>
     </tr>
 
     <?php
@@ -75,8 +87,14 @@ Sorted By:
                 {
                     echo "No";
                 }
-            //ONLY ADMINS CAN SEE THIS ?>
+            ?>
             </td>
+
+            <?php 
+            
+            if($this->getAuthenticatedUser()->admin == 1)
+            {
+            ?>
             <td><?= $this->escapeHtml($user->firstname) ?></td>
             <td><?= $this->escapeHtml($user->surname) ?></td>
             <td><?= $this->escapeHtml($user->email) ?></td>
@@ -84,7 +102,9 @@ Sorted By:
                 <a href="<?= $this->url('users', ['action' => 'edit', 'id' => $user->id]) ?>">Edit</a>
                 <a href="<?= $this->url('users', ['action' => 'delete', 'id' => $user->id]) ?>">Delete</a>
             </td>
-            <? //END ?>
+            <?php 
+            }   
+            ?>
         </tr>
 
     <?php endforeach; ?>

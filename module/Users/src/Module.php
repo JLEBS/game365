@@ -28,6 +28,16 @@ class Module implements ConfigProviderInterface
                     $resultSetPrototype->setArrayObjectPrototype(new Model\Users());
                     return new TableGateway('users', $dbAdapter, null, $resultSetPrototype);
                 },
+                Model\VerifyTableGateway::class => function ($container) {
+                    $dbAdapter = $container->get(AdapterInterface::class);
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Model\Verify());
+                    return new TableGateway('verify', $dbAdapter, null, $resultSetPrototype);
+                },
+                Model\VerifyTable::class => function($container) {
+                    $tableGateway = $container->get(Model\VerifyTableGateway::class);
+                    return new Model\VerifyTable($tableGateway);
+                },
             ],
         ];
     }
@@ -42,7 +52,8 @@ class Module implements ConfigProviderInterface
                 },
                 Controller\LoginController::class => function($container) {
                     return new Controller\LoginController(
-                        $container->get(Model\UsersTable::class)
+                        $container->get(Model\UsersTable::class),
+                        $container->get(Model\VerifyTable::class)
                     );
                 },
             ],

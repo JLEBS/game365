@@ -11,12 +11,16 @@
         }
     ?>
 </h2> 
-
-<?php //ONLY MEMBER CAN SEE THIS ?>
+<?php
+    if($user->admin == 1)
+    {
+    ?>
     <p>
         <a href="<?= $this->url('game', ['action' => 'add']) ?>">Add New Game</a>
     </p>
-<? //END ?>
+    <?php 
+    }
+    ?>
 
 Sorted By: 
 <?php 
@@ -86,12 +90,17 @@ Sorted By:
             ?>
         </td>
 
-        <? //ONLY ADMINS CAN SEE THIS ?>
+        <?php
+        if($user->admin == 1)
+        {
+        ?>
         <td>
             <a href="<?= $this->url('game', ['action' => 'edit', 'id' => $game->id]) ?>">Edit</a>
             <a href="<?= $this->url('game', ['action' => 'delete', 'id' => $game->id]) ?>">Delete</a>
         </td>
-        <? //END ?>
+        <?php 
+        }
+        ?>
     </tr>
 
 <?php endforeach; ?>

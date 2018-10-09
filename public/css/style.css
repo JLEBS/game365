@@ -1,5 +1,5 @@
 body {
-    padding-top: 600px;
+    padding-top: 60px;
     padding-bottom: 40px;
 }
 
@@ -36,4 +36,9 @@ div.container a.navbar-brand > img {
 
 float: center;
 color: red;
+}
+
+table, th, td{
+    border-style: solid;
+    border: 2px;
 }

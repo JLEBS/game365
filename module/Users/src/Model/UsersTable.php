@@ -18,8 +18,16 @@ class UsersTable
     {
         
         return $this->tableGateway->select(function($select) use ($options) {
+            if (isset($options['id'])) {
+                $select->where([ 'id' => $options['id'] ]);
+            }
+
             if (isset($options['username'])) {
                 $select->where([ 'username' => $options['username'] ]);
+            }
+
+            if (isset($options['email'])) {
+                $select->where([ 'email' => $options['email'] ]);
             }
 
             if (isset($options['sort'])) {

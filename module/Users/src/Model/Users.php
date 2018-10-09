@@ -144,7 +144,7 @@ class Users implements InputFilterAwareInterface
                 'options' => [
                     'encoding' => 'UTF-8',
                     'min' => 6,
-                    'max' => 50,
+                    'max' => 255,
                 ],
             ],
         ],
@@ -190,10 +190,9 @@ class Users implements InputFilterAwareInterface
         ]);
     }
 
-
     $inputFilter->add([
         'name' => 'admin',
-        'required' => true,
+        'required' => false,
         'filters' => [
             ['name' => StripTags::class],
            
@@ -202,7 +201,7 @@ class Users implements InputFilterAwareInterface
             [
                 'name' => 'InArray',
                 'options' => [
-                  'haystack' => [1, 0],
+                  'haystack' => [1,0],
                 ]
             ],
         ],

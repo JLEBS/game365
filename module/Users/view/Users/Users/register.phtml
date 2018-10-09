@@ -4,7 +4,7 @@ $this->headTitle($userhead);
 ?>
 
 <h1><?= $this->escapeHtml($userhead) ?></h1>
-
+<p><a href="<?= $this->url('login', ['action' => 'login']) ?>">Already have an account? Login here</a></p>
 <?php
 
 $firstname = $form->get('firstname');
@@ -36,7 +36,7 @@ $password->setAttribute('placeholder', 'Password');
 
     $admin = $form->get('admin');
     $admin->setAttribute('class', 'form-control');
-    $admin->setAttribute('placeholder', 'admin');
+    $admin->setAttribute('placeholder', 'adsdsdmin');
     
 $submit = $form->get('submit');
 $submit->setAttribute('class', 'btn btn-primary');
@@ -84,11 +84,8 @@ echo $this->form()->openTag($form);
     <?= $this->formElementErrors()->render($password, ['class' => 'help-block']) ?>
 </div>
 
-<div class="form-group">
-    <?= $this->formLabel($admin) ?>
-    <?= $this->formElement($admin) ?>
-    <?= $this->formElementErrors()->render($admin, ['class' => 'help-block']) ?>
-</div>
+
+
 
 <?php
     echo $this->formSubmit($submit);

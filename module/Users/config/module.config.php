@@ -32,6 +32,26 @@ return [
                     ],
                 ],
             ],
+            'passwordreset' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route' => '/passwordreset[/:action/:token]',
+                    'defaults' => [
+                        'controller' => Controller\LoginController::class,
+                        'action'     => 'passwordreset',
+                    ],
+                ],
+            ],
+            'setpassword' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route' => '/setpassword[/:action]',
+                    'defaults' => [
+                        'controller' => Controller\LoginController::class,
+                        'action'     => 'setpassword',
+                    ],
+                ],
+            ],
             'logout' => [
                 'type'    => Segment::class,
                 'options' => [
