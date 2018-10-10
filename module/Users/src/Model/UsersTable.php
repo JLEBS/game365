@@ -63,6 +63,8 @@ class UsersTable
             'username' => $user->username,
             'password' => $user->password,
             'admin' => $user->admin,
+            'avatar' => $user->avatar,
+            'join_date' => $user->join_date
         ];
 
         $id = (int) $user->id;

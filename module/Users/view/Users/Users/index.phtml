@@ -48,31 +48,36 @@ Sorted By:
 <table class="table">
     <tr>
         
-        <?php
+    <?php
 
-    if($this->getAuthenticatedUser()->admin == 1 || 2)
-    {
-        $nonAdminColumns = [
-            'id',
-            'username',
-            'dob',
-            'admin',
-            'firstname',
-            'surname',
-            'email'
-        ]; 
+if($this->getAuthenticatedUser()->admin == 1 || $this->getAuthenticatedUser()->admin == 2)
+{
+    $nonAdminColumns = [
+        'avatar',
+        'id',
+        'username',
+        'dob',
+        'join_date',
+        'admin',
+        'firstname',
+        'surname',
+        'email',
+        'avatar',
+    ]; 
+}
+if($this->getAuthenticatedUser()->admin == 0)
+{
+    $nonAdminColumns = [
+        'avatar',
+        'id',
+        'username',
+        'dob',
+        'join_date',
+        'admin',
+    ]; 
+
     }
 
-    if($this->getAuthenticatedUser()->admin == 0)
-    {
-        $nonAdminColumns = [
-            'id',
-            'username',
-            'dob',
-            'admin',
-        ]; 
-
-    }
         foreach ($sortValues as $attribute => $value )
         {
             if ($this->getAuthenticatedUser()->admin == 0 && !in_array($attribute, $nonAdminColumns)) {
@@ -98,7 +103,7 @@ Sorted By:
         <?php 
         } 
        
-        if($user->admin == 1 || 2)
+        if($user->admin == 1 || $user->admin == 2)
         {
             ?> <th>Modify</th><?php
         }
@@ -109,29 +114,31 @@ Sorted By:
     foreach ($users as $user) : 
     ?>
         <tr>
+            <td><img src="<?='/uploads/'. $user->avatar ?>" width="160px" height="208px" /></td>
             <td><?= $this->escapeHtml($user->id) ?></td>
             <td><?= $this->escapeHtml($user->username) ?></td>
             <td><?= $this->escapeHtml($user->dob) ?></td>
+            <td><?= $this->escapeHtml($user->join_date) ?></td>
             <td> 
-            <?php
-                if($user->admin == 1)
-                {
-                    echo "Yes";
-                }
-                elseif($user->admin == 0)
-                {
-                    echo "No";
-                }
-                else
-                {
-                    echo "Super Admin 😎";
-                }
-            ?>
+                <?php
+                    if($user->admin == 1)
+                    {
+                        echo "Yes";
+                    }
+                    elseif($user->admin == 0)
+                    {
+                        echo "No";
+                    }
+                    else
+                    {
+                        echo "Super Admin 😎";
+                    }
+                ?>
             </td>
-
+           
             <?php 
             
-            if($this->getAuthenticatedUser()->admin == 1 || 2)
+            if($this->getAuthenticatedUser()->admin == 1 || $this->getAuthenticatedUser()->admin == 2)
             {
             ?>
             <td><?= $this->escapeHtml($user->firstname) ?></td>

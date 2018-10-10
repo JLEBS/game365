@@ -122,7 +122,6 @@ class GameController extends AbstractActionController
         }
 
         $form = new GameForm();
-        
         $form->bind($game);
         $form->get('submit')->setAttribute('value', 'Edit');
 

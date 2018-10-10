@@ -6,14 +6,19 @@ use Zend\Db\Adapter\Adapter;
 use Zend\Filter\StringTrim;
 use Zend\Filter\StripTags;
 use Zend\Filter\ToInt;
+use Zend\Filter\File\RenameUpload;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\Validator\StringLength;
 use Zend\Validator\Digits;
 use Zend\Validator\Date;
+use Zend\InputFilter\FileInput;
 use Zend\ValidatorBetween;
 use Zend\Validator\Db\RecordExists;
 use Zend\Validator\Db\NoRecordExists;
+use Zend\Validator\EmailAddress;
+use Zend\Validator\Hostname;
+//use Zend\Mvc\Plugin\FilePrg;
 
 class UserInputFilter extends InputFilter
 {
@@ -99,14 +104,22 @@ class UserInputFilter extends InputFilter
                     'max' => 255,
                 ],
             ],
+            [
+                'name' => NoRecordExists::class,
+                'options' => [
+                    'adapter' => $this->dbAdapter,
+                    'table' =>  'users',
+                    'field' =>  'email',
+                ]
+            ],
+            [
+                'name' => EmailAddress::class,
+                'options' => [
+                    
+                ]
+            ],
         ],
     ]);
-
-   /* $validator = new NoRecordExists([
-        'table' =>  'users',
-        'field' =>  'username',
-        'adapter' =>  $dbadapter,
-    ]); */
 
     $this->add([
         'name' => 'username',
@@ -158,7 +171,7 @@ class UserInputFilter extends InputFilter
 
     $this->add([
         'name' => 'admin',
-        'required' => true,
+        'required' => false,
         'filters' => [
             ['name' => StripTags::class], 
         ],
@@ -172,4 +185,54 @@ class UserInputFilter extends InputFilter
         ],
     ]);
 
-    }}
+    $this->add([
+        'name' => 'avatar',
+        'required' => false,
+        'filters' => [
+            [
+                'name' => RenameUpload::class,
+                'options' => [
+                    'target' => './public/uploads',
+                    'randomize' => true,
+                    'use_upload_extension' => true
+                ],
+            ],
+        ],
+        'validators' => [
+            /* [
+                'name' => StringLength::class,
+                'options' => [
+                    'encoding' => 'UTF-8',
+                    'min' => 6,
+                    'max' => 255,
+                ],
+            ], */
+            // [
+            //     'name' => FilePrg::class,
+            //     'options' => [
+            //         'adapter' => $this->dbAdapter,
+            //         'minSize' =>  64,
+            //         'maxSize' =>  1028,
+            //         'newFileName' => 'fileName',
+            //         'uploadPath' => ''
+            //     ],
+            // ],
+        ],
+    ]);
+
+    $this->add([
+        'name' => 'join_date',
+        'required' => false,
+        'filters' => [
+            ['name' => StripTags::class],
+            ['name' => StringTrim::class],
+        ],
+        'validators' => [
+          [
+                'name' => 'Date',
+            ],
+        ],
+    ]);
+
+
+}}

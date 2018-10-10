@@ -29,7 +29,10 @@ $username->setAttribute('placeholder', 'Username');
 
 $admin = $form->get('admin');
 $admin->setAttribute('class', 'form-control');
-//$admin->setAttribute('placeholder', 'Admin');
+
+$avatar = $form->get('avatar');
+$avatar->setAttribute('class', 'form-control');
+$avatar->setAttribute('placeholder', 'Avatar');
 
 $submit = $form->get('submit');
 $submit->setAttribute('class', 'btn btn-primary');
@@ -76,6 +79,12 @@ echo $this->form()->openTag($form);
     <?= $this->formLabel($admin) ?>
     <?= $this->formElement($admin) ?>
     <?= $this->formElementErrors()->render($admin, ['class' => 'help-block']) ?>
+</div>
+
+<div class="form-group">
+    <?= $this->formLabel($avatar) ?>
+    <?= $this->formElement($avatar) ?>
+    <?= $this->formElementErrors()->render($avatar, ['class' => 'help-block']) ?>
 </div>
 
 <?php

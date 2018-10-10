@@ -57,18 +57,41 @@ class UsersForm extends Form
                 ],
             ]);
         }
-        $this->add([
-            'name' => 'admin',
-            'type' => 'Zend\Form\Element\Select',
-            'options' => [
-                'empty_option' => 'Please select',
-                'label' => 'Admin',
-                    'value_options'=> [
-                        1 => "Yes",
-                        0 => "No",
-                    ],
-            ],
-        ]);
+        if (isset($options["includeAdmin"])) {
+            $this->add([
+                'name' => 'admin',
+                'type' => 'Zend\Form\Element\Select',
+                'options' => [
+                    'empty_option' => 'Please select',
+                    'label' => 'Admin',
+                        'value_options'=> [
+                            1 => "Yes",
+                            0 => "No",
+                        ],
+                ],
+            ]);
+        }
+        
+        
+            $this->add([
+                'name' => 'avatar',
+                'type' => 'file',
+                'options' => [
+                    'label' => 'Avatar',
+                ],
+            ]);
+        
+        
+
+        if (isset($options["includejoin_date"])){
+            $this->add([
+                'name' => 'join_date',
+                'type' => 'date',
+                'options' => [
+                    'label' => 'Date Joined',
+                ],
+            ]);
+        }
         $this->add([
             'name' => 'submit',
             'type' => 'submit',

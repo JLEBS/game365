@@ -11,6 +11,7 @@
  * This should be an array of module namespaces used in the application.
  */
 return [
+    'Zend\Mvc\Plugin\FilePrg',
     'Zend\Mail',
     'Zend\Mvc\Plugin\FlashMessenger',
     'Zend\Session',

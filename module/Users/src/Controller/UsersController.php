@@ -33,13 +33,15 @@ class UsersController extends AbstractActionController
         }
 
         $sortableAttributes = [
+            'avatar',
             'id',
             'username',
             'dob',
+            'join_date',
             'admin',
             'firstname',
             'surname',
-            'email'
+            'email',
         ];
 
     $adminlevel = $this->getAuthenticatedUser()->get()->admin;
@@ -83,29 +85,44 @@ class UsersController extends AbstractActionController
         }
 
         $user= new Users();
-        $form->setData($request->getPost());
+        $form->setData(array_merge_recursive(
+            $request->getPost()->toArray(),
+            $request->getFiles()->toArray()
+        ));
+
+        $request->getFiles();
+
+        /* if ($request->getFiles()){
+            $file = current($request->getFiles());
+            $uploadSuccess = move_uploaded_file($file['tmp_name'], 'public/uploads/' . $file['name']);
+            if (!$uploadSuccess) {
+                echo 'Could not upload';
+            }
+        } */
 
         if (! $form->isValid()) {
+            //echo '<pre>';
+           // print_r($form->getMessages());
+
+            //$this->flashMessenger()->addMessage($form->getMessages());
+            //echo '</pre>';
             return ['form' => $form];
         }
+
+        /* echo '<pre>';
+        print_r($form->getData());
+        echo '</pre>';
+        exit; */
 
         $user->exchangeArray($form->getData());
 
         $bcrypt = new Bcrypt();
+        $date = date('Y-m-d H:i:s');
 
-        
+        $user->join_date = $date;
         $user->password = $bcrypt->create($user->password);
-        $user->admin = 0;
-
-
-        //if($user->username == $this->table->FetchAll(['username']))
-       // {
-        //    $this->flashMessenger()->addMessage('This username is already taken');
-          //  return $this->redirect()
-          //  ->toRoute('users');
-         //   exit;
-            
-      //  }
+        $user->avatar = basename($form->getData()['avatar']['tmp_name']);
+       // $user->admin = 0;
 
         $this->table->saveUsers($user);
         return $this->redirect()->toRoute('users');
@@ -149,9 +166,9 @@ class UsersController extends AbstractActionController
         try {
             $users = $this->table->getUsers($id);
             $password = $users->password;
+            $join_date = $users->join_date;
+            //$avatar = $users->avatar;
             $users->validatePassword = false;
-
-            
     
         } catch (\Exception $e) {
             return $this->redirect()->toRoute('users', ['action' => 'index']);
@@ -163,10 +180,12 @@ class UsersController extends AbstractActionController
             return $this->redirect()
             ->toRoute('users');
             exit;
-            
         }
 
-        $form = new UsersForm();
+        $form = new UsersForm([
+            'includeAdmin' => true
+        ]);
+
         $form->get('submit')->setAttribute('value', 'Edit');
 
         $request = $this->getRequest();
@@ -180,6 +199,17 @@ class UsersController extends AbstractActionController
         $form->setInputFilter($this->inputFilter);
         $form->setData($request->getPost());
         
+
+        //NEW CODE
+        $form->setData(array_merge_recursive(
+            $request->getPost()->toArray(),
+            $request->getFiles()->toArray()
+        ));
+
+
+
+
+
         if (! $request->isPost()) {
             return $viewData;
         }
@@ -188,6 +218,9 @@ class UsersController extends AbstractActionController
 
         $users->exchangeArray($form->getData());
         $users->password = $password;
+        $users->join_date = $join_date;
+        $users->avatar = basename($form->getData()['avatar']['tmp_name']);
+        //$users->avatar = $avatar;
 
         $this->table->saveUsers($users);
         return $this->redirect()->toRoute('users', ['action' => 'index']);
