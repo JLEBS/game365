@@ -42,6 +42,8 @@ class UsersController extends AbstractActionController
             'email'
         ];
 
+    $adminlevel = $this->getAuthenticatedUser()->get()->admin;
+
     $sortValues = array_reduce($sortableAttributes,
 
         function ($reduced, $attribute)
@@ -90,7 +92,10 @@ class UsersController extends AbstractActionController
         $user->exchangeArray($form->getData());
 
         $bcrypt = new Bcrypt();
+
+        
         $user->password = $bcrypt->create($user->password);
+        $user->admin = 0;
 
 
         //if($user->username == $this->table->FetchAll(['username']))
@@ -131,10 +136,11 @@ class UsersController extends AbstractActionController
         }
 
         $currentuser = $this->getAuthenticatedUser()->get()->id;
+        $adminlevel = $this->getAuthenticatedUser()->get()->admin;
 
         if($id == $currentuser){
 
-            $this->flashMessenger()->addMessage('You cannot delete yourself, idiot!');
+            $this->flashMessenger()->addMessage('You cannot modify yourself, idiot!');
             return $this->redirect()
             ->toRoute('users');
             exit;
@@ -145,17 +151,19 @@ class UsersController extends AbstractActionController
             $password = $users->password;
             $users->validatePassword = false;
 
-            if($users->admin == 1){
-
-                $this->flashMessenger()->addMessage("This isn't a dictatorship, you cannot just modify your peers, christ man, what's your problem?");
-                return $this->redirect()
-                ->toRoute('users');
-                exit;
-                
-            }
+            
     
         } catch (\Exception $e) {
             return $this->redirect()->toRoute('users', ['action' => 'index']);
+        }
+
+        if($adminlevel == 1 && ($users->admin == 1 || $users->admin == 2)){
+
+            $this->flashMessenger()->addMessage("This isn't a dictatorship, you cannot just modify your peers, christ man, what's your problem?");
+            return $this->redirect()
+            ->toRoute('users');
+            exit;
+            
         }
 
         $form = new UsersForm();
@@ -223,7 +231,7 @@ class UsersController extends AbstractActionController
 
         $users = $this->table->getUsers($id);
        
-        if($adminlevel == 1 && $users->admin == 1 || 2){
+        if($adminlevel == 1 && ($users->admin == 1 || $users->admin == 2)){
 
             $this->flashMessenger()->addMessage("This isn't a dictatorship, you cannot just delete your peers, christ man, what's your problem?");
             return $this->redirect()

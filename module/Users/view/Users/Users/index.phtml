@@ -12,6 +12,22 @@
         }
     ?>
 </h2> 
+<h3>
+    <?php 
+        if($user->admin == 0)
+        {
+            echo "User";
+        }
+        elseif($user->admin == 1)
+        {
+            echo "Moderator";
+        }
+        else
+        {
+            echo "Head Admin";
+        }
+    ?>
+</h3>
 <br/>
 
 Sorted By: 
