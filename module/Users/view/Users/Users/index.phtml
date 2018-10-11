@@ -47,7 +47,7 @@ Sorted By:
 ?>
 <table class="table">
     <tr>
-        
+        <th></th>
     <?php
 
 if($this->getAuthenticatedUser()->admin == 1 || $this->getAuthenticatedUser()->admin == 2)
@@ -114,9 +114,12 @@ if($this->getAuthenticatedUser()->admin == 0)
     foreach ($users as $user) : 
     ?>
         <tr>
-            <td><img src="<?='/uploads/'. $user->avatar ?>" width="160px" height="208px" /></td>
+            <td><img src="<?='/uploads/'. $user->avatar ?>" width="80px" height="108px" border-radius="20px" /></td>
             <td><?= $this->escapeHtml($user->id) ?></td>
-            <td><?= $this->escapeHtml($user->username) ?></td>
+            <td><a href="<?= $this->url('users', ['action' => 'userprofile']).'\\'.$user->id ?>"> <?=$user->username?></a></td>
+
+      
+
             <td><?= $this->escapeHtml($user->dob) ?></td>
             <td><?= $this->escapeHtml($user->join_date) ?></td>
             <td> 

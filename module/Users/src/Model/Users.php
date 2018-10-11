@@ -16,6 +16,7 @@ class Users
     public $admin;
     public $avatar;
     public $join_date;
+    public $active;
     public $validatePassword = true;
 
     private $inputFilter;
@@ -32,6 +33,7 @@ class Users
         $this->admin = !empty($data['admin']) ? $data['admin'] : 0;
         $this->avatar = !empty($data['avatar']) ? $data['avatar'] : null;
         $this->join_date = !empty($data['join_date']) ? $data['join_date'] : null;
+        $this->active = !empty($data['active']) ? $data['active'] : null;
     }
 
     public function getArrayCopy()
@@ -46,7 +48,8 @@ class Users
             'password' => $this->password,
             'admin' => $this->admin,
             'avatar' => $this->avatar,
-            'join_date' => $this->join_date
+            'join_date' => $this->join_date,
+            'active' => $this->active,
         ];
     }
 }

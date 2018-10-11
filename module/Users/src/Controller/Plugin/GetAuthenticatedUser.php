@@ -21,8 +21,6 @@ class GetAuthenticatedUser extends AbstractPlugin
     {
         $session = $this->getSessionContainer();
         $session->user = $user;
-
-
     }
     
     public function touchSessionContainer()

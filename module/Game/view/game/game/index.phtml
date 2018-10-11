@@ -80,9 +80,14 @@ Sorted By:
         </th>
         <?php 
         } 
-        ?>
+    
+        if ($user->admin == 1 || $user->admin ==2)
+        {
+            ?>
 
-        <th></th>
+        <th>Modify</th>
+            <?php
+        }?>
     </tr>
 
 <?php foreach ($games as $game) : ?>
@@ -106,10 +111,12 @@ Sorted By:
             ?>
         </td>
 
+        <td><?= $this->escapeHtml($game->username) ?></td>
         <?php
         if($user->admin == 1 || $user->admin == 2)
         {
         ?>
+        
         <td>
             <a href="<?= $this->url('game', ['action' => 'edit', 'id' => $game->id]) ?>">Edit</a>
             <a href="<?= $this->url('game', ['action' => 'delete', 'id' => $game->id]) ?>">Delete</a>

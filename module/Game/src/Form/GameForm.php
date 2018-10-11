@@ -67,6 +67,12 @@ class GameForm extends Form
                     ],
             ],
         ]);
+        if (isset($options['include_userid'])){
+            $this->add([
+                'name' => 'userid',
+                'type' => 'hidden',
+            ]);
+        }
         $this->add([
             'name' => 'submit',
             'type' => 'submit',

@@ -23,6 +23,8 @@ class Game implements InputFilterAwareInterface
     public $rating;
     public $img;
     public $online;
+    public $userid;
+    public $username;
 
     private $inputFilter;
 
@@ -35,6 +37,8 @@ class Game implements InputFilterAwareInterface
         $this->rating = !empty($data['rating']) ? $data['rating'] : null;
         $this->img = !empty($data['img']) ? $data['img'] : null;
         $this->online = !empty($data['online']) ? $data['online'] : 0;
+        $this->userid = !empty($data['userid']) ? $data['userid'] : null;
+        $this->username = !empty($data['username']) ? $data['username'] : null;
     }
 
     public function getArrayCopy()
@@ -47,10 +51,9 @@ class Game implements InputFilterAwareInterface
             'rating' => $this->rating,
             'img' => $this->img,
             'online' => $this->online,
-
+            'userid' => $this->userid,
         ];
     }
-
 
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
@@ -114,7 +117,6 @@ class Game implements InputFilterAwareInterface
         ],
     ]);
 
-    //Check this
     $inputFilter->add([
         'name' => 'date',
         'required' => true,
@@ -129,7 +131,6 @@ class Game implements InputFilterAwareInterface
         ],
     ]);
 
-    //CHeck this
     $inputFilter->add([
         'name' => 'rating',
         'required' => true,
@@ -183,6 +184,13 @@ class Game implements InputFilterAwareInterface
         ],
     ]);
 
+    $inputFilter->add([
+        'name' => 'userid',
+        'required' => false,
+        'filters' => [
+            ['name' => ToInt::class],
+        ],
+    ]);
 
     $this->inputFilter = $inputFilter;
     return $this->inputFilter;

@@ -72,6 +72,9 @@ class Module implements ConfigProviderInterface
          // Register the event listener method. 
          $sharedEventManager->attach(AbstractActionController::class, 
                  MvcEvent::EVENT_DISPATCH, [ $this, 'updateUserSession' ], 100);
+
+        $sharedEventManager->attach(AbstractActionController::class, 
+            MvcEvent::EVENT_DISPATCH, [ $this, 'touchActiveDate' ], 100);
     }
 
     public function updateUserSession($e)
@@ -101,6 +104,26 @@ class Module implements ConfigProviderInterface
             ->current();
         
         $getAuthenticatedUser->set($nextUser);
+    }
+
+    public function touchActiveDate($e)
+    {
+        $application = $e->getApplication();
+        $services = $application->getServiceManager();
+        $userTable = $services->get(Model\UsersTable::class);
+        
+        $getAuthenticatedUser = $services
+            ->get('ControllerPluginManager')
+            ->get('getAuthenticatedUser');
+
+        $user = $getAuthenticatedUser->get();
+
+        if (!$user) {
+            return;
+        }
+
+        $user->active = date('Y-m-d H:i:s');
+        $userTable->saveUsers($user);
     }
 
 }

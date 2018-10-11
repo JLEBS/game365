@@ -37,7 +37,6 @@ class LoginController extends AbstractActionController
 
         if ($user = $this->getAuthenticatedUser()->get()) {
 
-           
             return $this->redirect()
             ->toRoute('game');
         }

@@ -18,6 +18,11 @@ class UsersTable
     {
         
         return $this->tableGateway->select(function($select) use ($options) {
+            /* $select->columns([
+                '*',
+                'isActive' => new Expression('TIMESTAMPDIFF(active) ')
+            ]); */
+
             if (isset($options['id'])) {
                 $select->where([ 'id' => $options['id'] ]);
             }
@@ -55,7 +60,7 @@ class UsersTable
 
     public function saveUsers(Users $user)
     {
-        $data = [
+       /*  $data = [
             'firstname' => $user->firstname,
             'surname'  => $user->surname,
             'dob' => $user->dob,
@@ -65,8 +70,8 @@ class UsersTable
             'admin' => $user->admin,
             'avatar' => $user->avatar,
             'join_date' => $user->join_date
-        ];
-
+        ]; */
+        $data = $user->getArrayCopy();
         $id = (int) $user->id;
 
         if ($id === 0) {

@@ -33,7 +33,7 @@ class UsersController extends AbstractActionController
         }
 
         $sortableAttributes = [
-            'avatar',
+            //'avatar',
             'id',
             'username',
             'dob',
@@ -198,17 +198,10 @@ class UsersController extends AbstractActionController
         
         $form->setInputFilter($this->inputFilter);
         $form->setData($request->getPost());
-        
-
-        //NEW CODE
         $form->setData(array_merge_recursive(
             $request->getPost()->toArray(),
             $request->getFiles()->toArray()
         ));
-
-
-
-
 
         if (! $request->isPost()) {
             return $viewData;
@@ -299,6 +292,92 @@ class UsersController extends AbstractActionController
             'id'    => $id,
             'users' => $user,
         ];
+    }
+
+    public function profileAction()
+    {
+        if (!$user = $this->getAuthenticatedUser()->get()) 
+        {
+            return $this->redirect()
+            ->toRoute('game');
+            exit;
+        }
+
+        $users = $this->getAuthenticatedUser()->get(); 
+
+        $date = date("Y-m-d");
+        $age = $date - $user->dob;
+
+        $current = $user->join_date;
+        $newtime = date('Y-m-d H:i:s', strtotime('-10 Minutes'));
+
+        if($newtime > $current){
+            $online = true;
+        }
+        else{
+            $online = false;
+        }
+       
+         return new ViewModel([
+            'users' => $users,
+            'date' => $date,
+            'online' => $online
+            ]);
+    }
+
+    public function userprofileAction()
+    {
+        if (!$user = $this->getAuthenticatedUser()->get()) 
+        {
+            return $this->redirect()
+            ->toRoute('game');
+            exit;
+        }
+
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        if (0 === $id) {
+            return $this->redirect()->toRoute('users', ['action' => 'add']);
+        }
+
+        $currentuser = $this->getAuthenticatedUser()->get()->id;
+
+        //Users Age
+        $date = date("Y-m-d");
+        $age = $date - $user->dob;
+
+        //If user is online
+        $current = $user->active;
+        $newtime = date('Y-m-d H:i:s', strtotime('-10 Minutes'));
+
+        if(strtotime($newtime) >= strtotime($current)){
+            $online = true;
+            echo "<pre>";
+            var_dump($newtime."  ".$current);
+            echo "</pre>";
+        }
+        else{
+            $online = false;
+        }
+
+        if($id == $currentuser){
+            return $this->redirect()
+            ->toRoute('users', ['action' => 'profile']);
+            exit;
+        }
+
+        try {
+            $users = $this->table->getUsers($id);
+    
+        } catch (\Exception $e) {
+            return $this->redirect()->toRoute('users', ['action' => 'index']);
+        }
+
+         return new ViewModel([
+            'users' => $users,
+            'date' => $date,
+            'online' => $online
+            ]);
     }
 
     protected function getSort () {

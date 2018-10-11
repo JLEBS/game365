@@ -1,0 +1,94 @@
+<?php
+ $title = $users->firstname."'s Profile";
+$this->headTitle($title);
+?>
+<h1>
+    <?= $this->escapeHtml($title) ?>
+<?php if($online == true)
+    {
+        ?>
+        <canvas id='circle' width="20" height="20" color="red" style="border:2px solid black; background-color: #4ade4a; border-radius:10px;">
+        <?php
+    }
+    else
+    {
+        ?>
+        <canvas id='circle' width="20" height="20" color="red" style="border:2px solid black; background-color: #d0c8c8;; border-radius:10px;">
+        <?php
+    }
+    ?>
+    </canvas>
+</h1>
+<br/>
+<img src="<?='/uploads/'. $users->avatar ?>" width="320px" height="416px" />
+<table class="table" width="50%">
+    <tr>
+        <th>ID</th>
+        <td><?= $this->escapeHtml($users->id) ?></td>
+    </tr>
+    <tr>
+        <th>Username</th>
+        <td><?= $this->escapeHtml($users->firstname) ?></td>
+    </tr>
+    <tr>
+        <th>Firstname</th>
+        <td><?= $this->escapeHtml($users->firstname) ?></td>
+    </tr>
+    <tr>
+        <th>Surname</th>
+        <td><?= $this->escapeHtml($users->surname) ?></td>
+    </tr>
+    <tr>
+        <th>Date of Birth</th>
+        <td><?= $this->escapeHtml($users->dob) ?></td>
+    </tr>
+    <tr>
+        <th>Age</th>
+        <td><?= $this->escapeHtml($date - $users->dob) ?></td>
+    </tr>
+    <tr>
+        <th>Email</th>
+        <td><?= $this->escapeHtml($users->email) ?></td>
+    </tr>
+    <tr>
+        <th>Role</th>
+        <td>
+            <?php if($users->admin == 0)
+            {
+                echo "User";
+            }
+            elseif($users->admin == 1)
+            {
+                echo "Moderator";
+            }
+            else{
+                echo "Head Admin";
+            }
+        ?>
+        
+        </td>
+    </tr>
+    <tr>
+        <th>Date Joined</th>
+        <td><?= $this->escapeHtml($users->join_date) ?></td>
+    </tr>
+    <tr>
+        <th>Games Added</th>
+        <td>N/A</td>
+    </tr>
+    <tr>
+        <th>Last Active</th>
+        <td>
+            <?php 
+            if($users->active == NULL)
+            {
+                echo $users->join_date;
+            }
+            else
+            {
+                echo $this->escapeHtml($users->active);
+            
+            }?>
+        </td>
+    </tr>
+</table> 

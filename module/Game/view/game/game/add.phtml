@@ -4,6 +4,7 @@ $gamehead = 'Add New Game';
 $this->headTitle($gamehead);
 ?>
 <h1><?= $this->escapeHtml($gamehead) ?></h1>
+<h2><?= "Welcome ".$this->getAuthenticatedUser()->username ?></h2>
 <?php
 
 // This provides a default CSS class and placeholder text for the title element:
@@ -40,8 +41,7 @@ $form->prepare();
 
 echo $this->form()->openTag($form);
 ?>
-<?php // Wrap the elements in divs marked as form groups, and render the
-      // label, element, and errors separately within ?>
+
 <div class="form-group">
     <?= $this->formLabel($title) ?>
     <?= $this->formElement($title) ?>

@@ -46,6 +46,7 @@
                        
                         <li class="inactive"><a href="<?= $this->url('users') ?>">Registered Users</a></li>
                         <li class="inactive"><a href="<?= $this->url('logout', ['action' => 'logout']) ?>">Logout</a></li>
+                        <li class="inactive"><a href="<?= $this->url('users', ['action' => 'profile']) ?>">My Profile</a></li> 
                         <li class="active"><a href="?"><?php echo "Hello ".$user->username;?></a></li>
                         <?php
                         }
@@ -57,9 +58,6 @@
                         <?php 
                         }
                         ?>
-                    
-                  
-
                         
                     </ul>
                 </div>

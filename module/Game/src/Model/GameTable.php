@@ -20,7 +20,9 @@ class GameTable
         return $this->tableGateway->select(function($select) use ($options) {
             if (isset($options['sort'])) {
                 $select->order($options['sort']);
+                
             }
+            $select->join('users', 'users.id = game.userid', ['username']);
 
             return $select;
         });
@@ -50,7 +52,12 @@ class GameTable
             'rating' => $game->rating,
             'img' => $game->img,
             'online' => $game->online,
+            'userid' => $game->userid,
         ];
+
+        //echo"<pre>";
+        //var_dump($user->userid);
+        //echo "</pre>";
 
         $id = (int) $game->id;
 

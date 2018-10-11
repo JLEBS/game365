@@ -25,9 +25,12 @@ class GameController extends AbstractActionController
             'developer',
             'date',
             'rating',
-            'online'
+            'online',
+            'username',
             ];
             
+        $userid = $this->getAuthenticatedUser()->get()->id;
+
         $sortValues = array_reduce($sortableAttributes, 
         
         function ($reduced, $attribute) 
@@ -85,6 +88,14 @@ class GameController extends AbstractActionController
         }
 
         $game->exchangeArray($form->getData());
+        $userid = $this->getAuthenticatedUser()->get()->id;
+        $game->userid = $userid;
+
+        //echo "<pre>";
+        //echo $userid;
+        //echo "</pre>";
+
+        
         $this->table->saveGame($game);
         return $this->redirect()->toRoute('game');
     
